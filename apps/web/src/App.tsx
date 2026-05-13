@@ -76,6 +76,16 @@ export function App() {
         <p>FPS: {fps}</p>
         <p>Landmarks: {pose?.landmarks.length ?? 0}</p>
       </section>
+      <section>
+        <h2>Reps</h2>
+        <p>Valid: {validCount}</p>
+        <p>Rejected: {rejectedCount}</p>
+        <p>State: {currentState}</p>
+        <p>Elbow angle: {currentAngle === null ? '—' : `${currentAngle.toFixed(1)}°`}</p>
+        {lastRep && !lastRep.valid && (
+          <p role="alert">Last rep rejected: {lastRep.faults.join(', ')}</p>
+        )}
+      </section>
     </main>
   );
 }
