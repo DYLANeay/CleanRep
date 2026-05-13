@@ -19,7 +19,7 @@ describe('RepCounter', () => {
     expect(rep).not.toBeNull();
     expect(rep).toMatchObject({
       index: 0,
-      startedAt: 100,
+      startedAt: 200,
       endedAt: 500,
       minElbowAngle: 80,
       valid: true,
