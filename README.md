@@ -27,7 +27,7 @@ To confirm Postgres connectivity once dependencies are installed:
 pnpm --filter @cleanrep/api exec prisma db push
 ```
 
-(The Prisma schema is empty in M0 — models land with auth in M4.)
+(The Prisma schema is empty for now — models land with the auth work.)
 
 ## Scripts
 
