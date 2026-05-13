@@ -1,24 +1,17 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { createRef } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { PoseEngine } from './PoseEngine';
-import type { Pose } from './types';
 import { usePoseLoop } from './usePoseLoop';
 
-interface RafEntry {
-  id: number;
-  cb: FrameRequestCallback;
-}
-
 function setupRaf() {
-  let pending: RafEntry[] = [];
+  let pending = [];
   let nextId = 0;
-  const raf = vi.fn((cb: FrameRequestCallback) => {
+  const raf = vi.fn((cb) => {
     nextId += 1;
     pending.push({ id: nextId, cb });
     return nextId;
   });
-  const caf = vi.fn((id: number) => {
+  const caf = vi.fn((id) => {
     pending = pending.filter((e) => e.id !== id);
   });
   vi.stubGlobal('requestAnimationFrame', raf);
@@ -26,7 +19,7 @@ function setupRaf() {
   return {
     raf,
     caf,
-    tick(timestamp: number) {
+    tick(timestamp) {
       const drain = pending;
       pending = [];
       drain.forEach((e) => e.cb(timestamp));
@@ -37,11 +30,7 @@ function setupRaf() {
   };
 }
 
-function makeEngine(detectResult: Pose | null = null): PoseEngine & {
-  init: ReturnType<typeof vi.fn>;
-  detect: ReturnType<typeof vi.fn>;
-  dispose: ReturnType<typeof vi.fn>;
-} {
+function makeEngine(detectResult = null) {
   return {
     init: vi.fn(async () => undefined),
     detect: vi.fn(() => detectResult),
@@ -49,14 +38,14 @@ function makeEngine(detectResult: Pose | null = null): PoseEngine & {
   };
 }
 
-function videoRefFor(readyState = 4): React.RefObject<HTMLVideoElement> {
-  const ref = createRef<HTMLVideoElement>();
-  (ref as { current: Partial<HTMLVideoElement> }).current = { readyState } as HTMLVideoElement;
+function videoRefFor(readyState = 4) {
+  const ref = createRef();
+  ref.current = { readyState };
   return ref;
 }
 
 describe('usePoseLoop', () => {
-  let rafCtl: ReturnType<typeof setupRaf>;
+  let rafCtl;
 
   beforeEach(() => {
     rafCtl = setupRaf();
@@ -83,7 +72,7 @@ describe('usePoseLoop', () => {
   });
 
   it('drives engine.detect each frame while enabled and ready', async () => {
-    const pose: Pose = { landmarks: [{ x: 0, y: 0, z: 0 }], worldLandmarks: [], timestampMs: 0 };
+    const pose = { landmarks: [{ x: 0, y: 0, z: 0 }], worldLandmarks: [], timestampMs: 0 };
     const engine = makeEngine(pose);
     const ref = videoRefFor();
     const { result } = renderHook(() => usePoseLoop(ref, true, engine));
