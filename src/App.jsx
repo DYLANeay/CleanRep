@@ -5,13 +5,13 @@ import { MediaPipePoseEngine } from './pose/mediapipe';
 import { usePoseLoop } from './pose/usePoseLoop';
 import { useRepCounter } from './pushup/useRepCounter';
 
-const stageStyle: React.CSSProperties = {
+const stageStyle = {
   position: 'relative',
   display: 'inline-block',
   lineHeight: 0,
 };
 
-const overlayStyle: React.CSSProperties = {
+const overlayStyle = {
   position: 'absolute',
   inset: 0,
   width: '100%',
