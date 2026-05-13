@@ -21,6 +21,7 @@ const overlayStyle = {
 
 export function App() {
   const { videoRef, status: camStatus, error: camError, start, stop } = useCamera();
+  //useMemo car opération coûteuse, on veut pas recréer le moteur à chaque render
   const engine = useMemo(() => new MediaPipePoseEngine(), []);
   const {
     pose,
@@ -43,7 +44,10 @@ export function App() {
           <SkeletonOverlay pose={pose} videoRef={videoRef} style={overlayStyle} />
         </div>
         <div>
-          <button onClick={start} disabled={camStatus === 'streaming' || camStatus === 'requesting'}>
+          <button
+            onClick={start}
+            disabled={camStatus === 'streaming' || camStatus === 'requesting'}
+          >
             Start camera
           </button>
           <button onClick={stop} disabled={camStatus !== 'streaming'}>

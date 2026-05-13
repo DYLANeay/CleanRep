@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 
 export function usePoseLoop(videoRef, enabled, engine) {
+  //coordonées articulaires
   const [pose, setPose] = useState(null);
   const [fps, setFps] = useState(0);
+  //indique si le moteur de pose est prêt à être utilisé
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(null);
 
+  //id du requestAnimationFrame
+  //API navigateur qui dit au navigateur : « appelle cette fonction juste avant le prochain repaint (rafraîchissement de l'écran) »
   const rafRef = useRef(null);
   const frameCount = useRef(0);
   const fpsWindowStart = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
+    //chargement du modèle IA
     engine
       .init()
       .then(() => {
@@ -37,6 +42,7 @@ export function usePoseLoop(videoRef, enabled, engine) {
     const tick = (timestampMs) => {
       if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
         try {
+          //rerender des coordonnées articulaires à chaque frame
           setPose(engine.detect(video, timestampMs));
         } catch (e) {
           setError(e instanceof Error ? e.message : 'Pose detect failed');
