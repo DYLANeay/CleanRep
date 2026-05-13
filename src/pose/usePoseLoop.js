@@ -1,27 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import type { PoseEngine } from './PoseEngine';
-import type { Pose } from './types';
 
-export interface UsePoseLoopResult {
-  pose: Pose | null;
-  fps: number;
-  ready: boolean;
-  error: string | null;
-}
-
-export function usePoseLoop(
-  videoRef: React.RefObject<HTMLVideoElement>,
-  enabled: boolean,
-  engine: PoseEngine,
-): UsePoseLoopResult {
-  const [pose, setPose] = useState<Pose | null>(null);
+export function usePoseLoop(videoRef, enabled, engine) {
+  const [pose, setPose] = useState(null);
   const [fps, setFps] = useState(0);
   const [ready, setReady] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
-  const rafRef = useRef<number | null>(null);
+  const rafRef = useRef(null);
   const frameCount = useRef(0);
-  const fpsWindowStart = useRef<number | null>(null);
+  const fpsWindowStart = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -30,7 +17,7 @@ export function usePoseLoop(
       .then(() => {
         if (!cancelled) setReady(true);
       })
-      .catch((e: unknown) => {
+      .catch((e) => {
         if (!cancelled) {
           setError(e instanceof Error ? e.message : 'Failed to load pose engine');
         }
@@ -47,7 +34,7 @@ export function usePoseLoop(
     const video = videoRef.current;
     if (!video) return;
 
-    const tick = (timestampMs: number) => {
+    const tick = (timestampMs) => {
       if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
         try {
           setPose(engine.detect(video, timestampMs));
