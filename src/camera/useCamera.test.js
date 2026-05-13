@@ -70,6 +70,6 @@ describe('useCamera', () => {
     await waitFor(() => expect(result.current.status).toBe('streaming'));
     act(() => result.current.stop());
     expect(result.current.status).toBe('idle');
-    expect((stream.getTracks()[0] as unknown as { stop: ReturnType<typeof vi.fn> }).stop).toHaveBeenCalled();
+    expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 });
