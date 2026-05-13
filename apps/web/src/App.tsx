@@ -31,6 +31,7 @@ export function App() {
     ready: engineReady,
     error: engineError,
   } = usePoseLoop(videoRef, camStatus === 'streaming', engine);
+  const { validCount, rejectedCount, currentAngle, currentState, lastRep } = useRepCounter(pose);
 
   useEffect(() => {
     let cancelled = false;
