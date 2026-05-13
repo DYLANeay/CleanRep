@@ -1,7 +1,7 @@
 # CleanRep
 
-Webcam-based pushup counter and form validator. See [PLAN.md](./PLAN.md) for the
-product plan and roadmap. This README covers running the scaffold locally.
+Webcam-based pushup counter and form validator. This README covers running the
+project locally.
 
 ## Prerequisites
 
