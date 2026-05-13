@@ -74,7 +74,6 @@ export function App() {
         <p>FPS: {fps}</p>
         <p>Landmarks: {pose?.landmarks.length ?? 0}</p>
       </section>
-      <style>{`.overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }`}</style>
     </main>
   );
 }
