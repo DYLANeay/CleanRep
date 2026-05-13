@@ -49,14 +49,14 @@ describe('MediaPipePoseEngine', () => {
 
   it('detect throws when called before init', () => {
     const engine = new MediaPipePoseEngine();
-    expect(() => engine.detect({} as HTMLVideoElement, 0)).toThrow(/before init/);
+    expect(() => engine.detect({}, 0)).toThrow(/before init/);
   });
 
   it('detect returns null when MediaPipe finds no landmarks', async () => {
     detectForVideo.mockReturnValue({ landmarks: [], worldLandmarks: [] });
     const engine = new MediaPipePoseEngine();
     await engine.init();
-    expect(engine.detect({} as HTMLVideoElement, 100)).toBeNull();
+    expect(engine.detect({}, 100)).toBeNull();
   });
 
   it('detect returns a Pose with landmarks and timestamp', async () => {
@@ -68,7 +68,7 @@ describe('MediaPipePoseEngine', () => {
     });
     const engine = new MediaPipePoseEngine();
     await engine.init();
-    const pose = engine.detect({} as HTMLVideoElement, 250);
+    const pose = engine.detect({}, 250);
     expect(pose).toEqual({ landmarks, worldLandmarks, timestampMs: 250 });
   });
 
