@@ -56,7 +56,7 @@ export function usePoseLoop(
           return;
         }
         frameCount.current += 1;
-        if (fpsWindowStart.current === 0) fpsWindowStart.current = timestampMs;
+        if (fpsWindowStart.current === null) fpsWindowStart.current = timestampMs;
         const elapsed = timestampMs - fpsWindowStart.current;
         if (elapsed >= 1000) {
           setFps(Math.round((frameCount.current * 1000) / elapsed));
