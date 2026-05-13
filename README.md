@@ -22,8 +22,7 @@ Open http://localhost:5173, click *Start camera*, and start doing pushups.
 | Command          | What it does                              |
 | ---------------- | ----------------------------------------- |
 | `pnpm dev`       | Vite dev server on `:5173`                |
-| `pnpm build`     | Typecheck + production build              |
-| `pnpm typecheck` | TypeScript checks                         |
+| `pnpm build`     | Production build                          |
 | `pnpm lint`      | ESLint                                    |
 | `pnpm test`      | Vitest                                    |
 | `pnpm format`    | Prettier write                            |
