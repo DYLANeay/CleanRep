@@ -72,7 +72,7 @@ export function usePoseLoop(
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       frameCount.current = 0;
-      fpsWindowStart.current = 0;
+      fpsWindowStart.current = null;
     };
   }, [enabled, ready, engine, videoRef]);
 
