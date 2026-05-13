@@ -77,4 +77,32 @@ describe('RepCounter', () => {
     expect(rep?.valid).toBe(false);
     expect(rep?.minElbowAngle).toBe(110);
   });
+
+  it('does not enter DOWN when posture is invalid', () => {
+    const c = new RepCounter();
+    c.update(170, 0, false);
+    c.update(80, 100, false);
+    c.update(170, 200, false);
+    expect(c.currentState).toBe('UP');
+  });
+
+  it('flags POSTURE_LOST when posture drops during a rep', () => {
+    const c = new RepCounter();
+    c.update(170, 0, true);
+    c.update(100, 100, true);
+    c.update(80, 200, false);
+    const rep = c.update(170, 300, true);
+    expect(rep?.valid).toBe(false);
+    expect(rep?.faults).toEqual(['POSTURE_LOST']);
+  });
+
+  it('reports both INSUFFICIENT_DEPTH and POSTURE_LOST when applicable', () => {
+    const c = new RepCounter();
+    c.update(170, 0, true);
+    c.update(100, 100, true);
+    c.update(95, 150, false);
+    const rep = c.update(170, 200, true);
+    expect(rep?.valid).toBe(false);
+    expect(rep?.faults).toEqual(['INSUFFICIENT_DEPTH', 'POSTURE_LOST']);
+  });
 });
