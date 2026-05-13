@@ -1,27 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Pose } from '../pose/types';
 import { elbowAngle } from './angle';
-import { RepCounter, type Rep, type RepCounterConfig, type RepState } from './repCounter';
+import { RepCounter } from './repCounter';
 
-export interface UseRepCounterResult {
-  reps: Rep[];
-  validCount: number;
-  rejectedCount: number;
-  lastRep: Rep | null;
-  currentAngle: number | null;
-  currentState: RepState;
-}
-
-export function useRepCounter(
-  pose: Pose | null,
-  config?: Partial<RepCounterConfig>,
-): UseRepCounterResult {
-  const counterRef = useRef<RepCounter>();
+export function useRepCounter(pose, config) {
+  const counterRef = useRef();
   if (!counterRef.current) counterRef.current = new RepCounter(config);
 
-  const [reps, setReps] = useState<Rep[]>([]);
-  const [currentAngle, setCurrentAngle] = useState<number | null>(null);
-  const [currentState, setCurrentState] = useState<RepState>('UP');
+  const [reps, setReps] = useState([]);
+  const [currentAngle, setCurrentAngle] = useState(null);
+  const [currentState, setCurrentState] = useState('UP');
 
   useEffect(() => {
     if (!pose) return;

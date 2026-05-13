@@ -1,6 +1,4 @@
-import type { Landmark, Pose } from '../pose/types';
-
-export function angleAt(a: Landmark, b: Landmark, c: Landmark): number {
+export function angleAt(a, b, c) {
   const bax = a.x - b.x;
   const bay = a.y - b.y;
   const bcx = c.x - b.x;
@@ -12,10 +10,10 @@ export function angleAt(a: Landmark, b: Landmark, c: Landmark): number {
   return (Math.acos(cos) * 180) / Math.PI;
 }
 
-const LEFT_ARM = [11, 13, 15] as const;
-const RIGHT_ARM = [12, 14, 16] as const;
+const LEFT_ARM = [11, 13, 15];
+const RIGHT_ARM = [12, 14, 16];
 
-function avgVisibility(pose: Pose, indices: readonly number[]): number {
+function avgVisibility(pose, indices) {
   let sum = 0;
   let n = 0;
   for (const i of indices) {
@@ -28,7 +26,7 @@ function avgVisibility(pose: Pose, indices: readonly number[]): number {
   return n === 0 ? 1 : sum / n;
 }
 
-export function elbowAngle(pose: Pose): number | null {
+export function elbowAngle(pose) {
   const arm = avgVisibility(pose, LEFT_ARM) >= avgVisibility(pose, RIGHT_ARM) ? LEFT_ARM : RIGHT_ARM;
   const shoulder = pose.landmarks[arm[0]];
   const elbow = pose.landmarks[arm[1]];

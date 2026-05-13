@@ -2,11 +2,11 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useCamera } from './useCamera';
 
-function makeStream(): MediaStream {
-  const track = { stop: vi.fn() } as unknown as MediaStreamTrack;
+function makeStream() {
+  const track = { stop: vi.fn() };
   return {
     getTracks: () => [track],
-  } as unknown as MediaStream;
+  };
 }
 
 describe('useCamera', () => {
@@ -70,6 +70,6 @@ describe('useCamera', () => {
     await waitFor(() => expect(result.current.status).toBe('streaming'));
     act(() => result.current.stop());
     expect(result.current.status).toBe('idle');
-    expect((stream.getTracks()[0] as unknown as { stop: ReturnType<typeof vi.fn> }).stop).toHaveBeenCalled();
+    expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 });

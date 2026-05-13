@@ -1,16 +1,8 @@
 import { useEffect, useRef } from 'react';
-import type { Pose } from '../pose/types';
 import { drawSkeleton } from './drawSkeleton';
 
-export interface SkeletonOverlayProps {
-  pose: Pose | null;
-  videoRef: React.RefObject<HTMLVideoElement>;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export function SkeletonOverlay({ pose, videoRef, className, style }: SkeletonOverlayProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+export function SkeletonOverlay({ pose, videoRef, className, style }) {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;

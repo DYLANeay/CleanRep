@@ -1,26 +1,16 @@
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision';
-import type { PoseEngine } from './PoseEngine';
-import type { Pose, PoseFrame } from './types';
 
 const DEFAULT_WASM_BASE = '/mediapipe/wasm';
 const DEFAULT_MODEL_PATH = '/mediapipe/models/pose_landmarker_lite.task';
 
-export interface MediaPipePoseEngineOptions {
-  wasmBase?: string;
-  modelPath?: string;
-}
-
-export class MediaPipePoseEngine implements PoseEngine {
-  private landmarker: PoseLandmarker | null = null;
-  private readonly wasmBase: string;
-  private readonly modelPath: string;
-
-  constructor(options: MediaPipePoseEngineOptions = {}) {
+export class MediaPipePoseEngine {
+  constructor(options = {}) {
+    this.landmarker = null;
     this.wasmBase = options.wasmBase ?? DEFAULT_WASM_BASE;
     this.modelPath = options.modelPath ?? DEFAULT_MODEL_PATH;
   }
 
-  async init(): Promise<void> {
+  async init() {
     if (this.landmarker) return;
     const fileset = await FilesetResolver.forVisionTasks(this.wasmBase);
     this.landmarker = await PoseLandmarker.createFromOptions(fileset, {
@@ -30,7 +20,7 @@ export class MediaPipePoseEngine implements PoseEngine {
     });
   }
 
-  detect(frame: PoseFrame, timestampMs: number): Pose | null {
+  detect(frame, timestampMs) {
     if (!this.landmarker) {
       throw new Error('MediaPipePoseEngine.detect called before init');
     }
@@ -44,7 +34,7 @@ export class MediaPipePoseEngine implements PoseEngine {
     };
   }
 
-  dispose(): void {
+  dispose() {
     this.landmarker?.close();
     this.landmarker = null;
   }
