@@ -3,6 +3,7 @@ import { useCamera } from './camera/useCamera';
 import { SkeletonOverlay } from './overlay/SkeletonOverlay';
 import { MediaPipePoseEngine } from './pose/mediapipe';
 import { usePoseLoop } from './pose/usePoseLoop';
+import { useRepCounter } from './pushup/useRepCounter';
 
 type HealthStatus = 'loading' | 'ok' | 'error';
 
