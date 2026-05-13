@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { Landmark, Pose } from '../pose/types';
 import { angleAt, elbowAngle } from './angle';
 
-function lm(x: number, y: number, visibility = 1): Landmark {
+function lm(x, y, visibility = 1) {
   return { x, y, z: 0, visibility };
 }
 
-function makePose(landmarks: Landmark[]): Pose {
+function makePose(landmarks) {
   return { landmarks, worldLandmarks: [], timestampMs: 0 };
 }
 
@@ -29,8 +28,8 @@ describe('angleAt', () => {
 });
 
 describe('elbowAngle', () => {
-  function poseWith(left: Partial<Record<11 | 13 | 15, Landmark>>, right: Partial<Record<12 | 14 | 16, Landmark>>) {
-    const landmarks: Landmark[] = Array.from({ length: 33 }, () => lm(0, 0, 1));
+  function poseWith(left, right) {
+    const landmarks = Array.from({ length: 33 }, () => lm(0, 0, 1));
     if (left[11]) landmarks[11] = left[11];
     if (left[13]) landmarks[13] = left[13];
     if (left[15]) landmarks[15] = left[15];
@@ -57,7 +56,7 @@ describe('elbowAngle', () => {
   });
 
   it('returns null when required landmarks are missing', () => {
-    const landmarks: Landmark[] = Array.from({ length: 12 }, () => lm(0, 0));
+    const landmarks = Array.from({ length: 12 }, () => lm(0, 0));
     expect(elbowAngle(makePose(landmarks))).toBeNull();
   });
 });
