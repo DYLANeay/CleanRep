@@ -32,6 +32,7 @@ module.exports = {
     'dist',
     'build',
     'coverage',
+    'apps/web/public',
     '**/*.config.js',
     '**/*.config.cjs',
     '**/*.config.ts',
