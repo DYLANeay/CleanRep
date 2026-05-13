@@ -56,7 +56,7 @@ export function App() {
         {camError && <p role="alert">{camError}</p>}
         <div style={stageStyle}>
           <video ref={videoRef} autoPlay playsInline muted />
-          <SkeletonOverlay pose={pose} videoRef={videoRef} className="overlay" />
+          <SkeletonOverlay pose={pose} videoRef={videoRef} style={overlayStyle} />
         </div>
         <div>
           <button onClick={start} disabled={camStatus === 'streaming' || camStatus === 'requesting'}>
