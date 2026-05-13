@@ -1,39 +1,19 @@
-export type RepState = 'UP' | 'DOWN';
-export type Fault = 'INSUFFICIENT_DEPTH';
-
-export interface Rep {
-  index: number;
-  startedAt: number;
-  endedAt: number;
-  minElbowAngle: number;
-  valid: boolean;
-  faults: Fault[];
-}
-
-export interface RepCounterConfig {
-  upThreshold: number;
-  downThreshold: number;
-  depthThreshold: number;
-}
-
-export const DEFAULT_REP_COUNTER_CONFIG: RepCounterConfig = {
+export const DEFAULT_REP_COUNTER_CONFIG = {
   upThreshold: 160,
   downThreshold: 110,
   depthThreshold: 90,
 };
 
 export class RepCounter {
-  private readonly config: RepCounterConfig;
-  private state: RepState = 'UP';
-  private minAngle = Infinity;
-  private repStartedAt = 0;
-  private nextIndex = 0;
-
-  constructor(config: Partial<RepCounterConfig> = {}) {
+  constructor(config = {}) {
     this.config = { ...DEFAULT_REP_COUNTER_CONFIG, ...config };
+    this.state = 'UP';
+    this.minAngle = Infinity;
+    this.repStartedAt = 0;
+    this.nextIndex = 0;
   }
 
-  update(angle: number, timestampMs: number): Rep | null {
+  update(angle, timestampMs) {
     if (this.state === 'UP') {
       if (angle < this.config.downThreshold) {
         this.state = 'DOWN';
@@ -45,7 +25,7 @@ export class RepCounter {
     if (angle < this.minAngle) this.minAngle = angle;
     if (angle > this.config.upThreshold) {
       const valid = this.minAngle < this.config.depthThreshold;
-      const rep: Rep = {
+      const rep = {
         index: this.nextIndex++,
         startedAt: this.repStartedAt,
         endedAt: timestampMs,
@@ -60,15 +40,15 @@ export class RepCounter {
     return null;
   }
 
-  get currentState(): RepState {
+  get currentState() {
     return this.state;
   }
 
-  get currentMinAngle(): number {
+  get currentMinAngle() {
     return this.minAngle;
   }
 
-  reset(): void {
+  reset() {
     this.state = 'UP';
     this.minAngle = Infinity;
     this.repStartedAt = 0;
