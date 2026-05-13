@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useCamera } from './camera/useCamera';
 import { SkeletonOverlay } from './overlay/SkeletonOverlay';
 import { MediaPipePoseEngine } from './pose/mediapipe';
 import { usePoseLoop } from './pose/usePoseLoop';
 import { useRepCounter } from './pushup/useRepCounter';
-
-type HealthStatus = 'loading' | 'ok' | 'error';
 
 const stageStyle: React.CSSProperties = {
   position: 'relative',
@@ -22,7 +20,6 @@ const overlayStyle: React.CSSProperties = {
 };
 
 export function App() {
-  const [apiStatus, setApiStatus] = useState<HealthStatus>('loading');
   const { videoRef, status: camStatus, error: camError, start, stop } = useCamera();
   const engine = useMemo(() => new MediaPipePoseEngine(), []);
   const {
@@ -33,25 +30,9 @@ export function App() {
   } = usePoseLoop(videoRef, camStatus === 'streaming', engine);
   const { validCount, rejectedCount, currentAngle, currentState, lastRep } = useRepCounter(pose);
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/api/v1/health')
-      .then((r) => r.json())
-      .then((data: { ok: boolean }) => {
-        if (!cancelled) setApiStatus(data.ok ? 'ok' : 'error');
-      })
-      .catch(() => {
-        if (!cancelled) setApiStatus('error');
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   return (
     <main>
       <h1>CleanRep</h1>
-      <p>API: {apiStatus}</p>
       <section>
         <h2>Camera</h2>
         <p>Status: {camStatus}</p>
