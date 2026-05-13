@@ -1,9 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const detectForVideo = vi.fn();
-const close = vi.fn();
-const createFromOptions = vi.fn(async () => ({ detectForVideo, close }));
-const forVisionTasks = vi.fn(async () => ({}));
+const { detectForVideo, close, createFromOptions, forVisionTasks } = vi.hoisted(() => {
+  const detectForVideo = vi.fn();
+  const close = vi.fn();
+  const createFromOptions = vi.fn(async () => ({ detectForVideo, close }));
+  const forVisionTasks = vi.fn(async () => ({}));
+  return { detectForVideo, close, createFromOptions, forVisionTasks };
+});
 
 vi.mock('@mediapipe/tasks-vision', () => ({
   FilesetResolver: { forVisionTasks },
