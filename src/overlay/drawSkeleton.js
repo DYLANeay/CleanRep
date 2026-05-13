@@ -1,21 +1,6 @@
-import type { Pose } from '../pose/types';
 import { POSE_CONNECTIONS } from './connections';
 
-export interface DrawSkeletonOptions {
-  width: number;
-  height: number;
-  minVisibility?: number;
-  lineColor?: string;
-  pointColor?: string;
-  lineWidth?: number;
-  pointRadius?: number;
-}
-
-export function drawSkeleton(
-  ctx: CanvasRenderingContext2D,
-  pose: Pose,
-  opts: DrawSkeletonOptions,
-): void {
+export function drawSkeleton(ctx, pose, opts) {
   const {
     width,
     height,
@@ -26,7 +11,7 @@ export function drawSkeleton(
     pointRadius = 4,
   } = opts;
 
-  const visible = (i: number) => (pose.landmarks[i]?.visibility ?? 1) >= minVisibility;
+  const visible = (i) => (pose.landmarks[i]?.visibility ?? 1) >= minVisibility;
 
   ctx.lineWidth = lineWidth;
   ctx.strokeStyle = lineColor;
