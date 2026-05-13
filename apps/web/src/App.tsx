@@ -1,9 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCamera } from './camera/useCamera';
+import { SkeletonOverlay } from './overlay/SkeletonOverlay';
 import { MediaPipePoseEngine } from './pose/mediapipe';
 import { usePoseLoop } from './pose/usePoseLoop';
 
 type HealthStatus = 'loading' | 'ok' | 'error';
+
+const stageStyle: React.CSSProperties = {
+  position: 'relative',
+  display: 'inline-block',
+  lineHeight: 0,
+};
+
+const overlayStyle: React.CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  pointerEvents: 'none',
+};
 
 export function App() {
   const [apiStatus, setApiStatus] = useState<HealthStatus>('loading');
@@ -39,7 +54,10 @@ export function App() {
         <h2>Camera</h2>
         <p>Status: {camStatus}</p>
         {camError && <p role="alert">{camError}</p>}
-        <video ref={videoRef} autoPlay playsInline muted />
+        <div style={stageStyle}>
+          <video ref={videoRef} autoPlay playsInline muted />
+          <SkeletonOverlay pose={pose} videoRef={videoRef} style={overlayStyle} />
+        </div>
         <div>
           <button onClick={start} disabled={camStatus === 'streaming' || camStatus === 'requesting'}>
             Start camera
