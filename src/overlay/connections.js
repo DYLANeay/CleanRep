@@ -1,4 +1,4 @@
-export const POSE_CONNECTIONS: ReadonlyArray<readonly [number, number]> = [
+export const POSE_CONNECTIONS = [
   [11, 12],
   [11, 23],
   [12, 24],
