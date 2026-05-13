@@ -27,5 +27,5 @@ export function SkeletonOverlay({ pose, videoRef, className, style }: SkeletonOv
     if (pose) drawSkeleton(ctx, pose, { width, height });
   }, [pose, videoRef]);
 
-  return <canvas ref={canvasRef} className={className} />;
+  return <canvas ref={canvasRef} className={className} style={style} />;
 }
