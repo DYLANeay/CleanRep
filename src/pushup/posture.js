@@ -1,5 +1,9 @@
+//epaule gauche, hanche gacuhe
 const LEFT_TORSO = [11, 23];
+//epaule droite, hanche droite
 const RIGHT_TORSO = [12, 24];
+
+//identique à angle.js
 const LEFT_ARM = [11, 13, 15];
 const RIGHT_ARM = [12, 14, 16];
 
@@ -9,9 +13,11 @@ function sumVisibility(pose, indices) {
   return sum;
 }
 
+//calcul l'inclinaison du torse en degrés en choisissant le côté avec la meilleure visibilité totale (épaule + hanche)
 export function torsoTiltDeg(pose) {
   const useLeft = sumVisibility(pose, LEFT_TORSO) >= sumVisibility(pose, RIGHT_TORSO);
   const [si, hi] = useLeft ? LEFT_TORSO : RIGHT_TORSO;
+  //s = shoulders, h = hips
   const s = pose.landmarks[si];
   const h = pose.landmarks[hi];
   if (!s || !h) return null;
@@ -21,6 +27,7 @@ export function torsoTiltDeg(pose) {
   return (Math.atan2(Math.abs(dy), Math.abs(dx)) * 180) / Math.PI;
 }
 
+//verifie que le poignet est bien en dessous de l'épaule
 export function wristBelowShoulder(pose) {
   const useLeft = sumVisibility(pose, LEFT_ARM) >= sumVisibility(pose, RIGHT_ARM);
   const arm = useLeft ? LEFT_ARM : RIGHT_ARM;
@@ -30,6 +37,7 @@ export function wristBelowShoulder(pose) {
   return wrist.y > shoulder.y;
 }
 
+//deafault config pour la posture "pushup"
 export const DEFAULT_POSTURE_CONFIG = {
   maxTorsoTiltDeg: 35,
   requireWristBelowShoulder: true,

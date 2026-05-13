@@ -1,6 +1,10 @@
+//seuil par défaut en degrés
 export const DEFAULT_REP_COUNTER_CONFIG = {
+  //bras tendu
   upThreshold: 160,
+  //bras plié
   downThreshold: 110,
+  //angle minimal à atteindre pour valider la rep
   depthThreshold: 90,
 };
 
@@ -13,7 +17,7 @@ export class RepCounter {
     this.nextIndex = 0;
     this.postureLost = false;
   }
-
+  // appelé à chaque frame
   update(angle, timestampMs, isPostureValid = true) {
     if (this.state === 'UP') {
       if (angle < this.config.downThreshold && isPostureValid) {
@@ -24,6 +28,7 @@ export class RepCounter {
       }
       return null;
     }
+    //vérifie que la rep est bien valide selon tous les critères définis plus tot
     if (!isPostureValid) this.postureLost = true;
     if (angle < this.minAngle) this.minAngle = angle;
     if (angle > this.config.upThreshold) {
@@ -48,6 +53,7 @@ export class RepCounter {
     return null;
   }
 
+  //getters
   get currentState() {
     return this.state;
   }
