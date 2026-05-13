@@ -3,6 +3,7 @@ import { useCamera } from './camera/useCamera';
 import { SkeletonOverlay } from './overlay/SkeletonOverlay';
 import { MediaPipePoseEngine } from './pose/mediapipe';
 import { usePoseLoop } from './pose/usePoseLoop';
+import { useRepCounter } from './pushup/useRepCounter';
 
 type HealthStatus = 'loading' | 'ok' | 'error';
 
@@ -30,6 +31,7 @@ export function App() {
     ready: engineReady,
     error: engineError,
   } = usePoseLoop(videoRef, camStatus === 'streaming', engine);
+  const { validCount, rejectedCount, currentAngle, currentState, lastRep } = useRepCounter(pose);
 
   useEffect(() => {
     let cancelled = false;
@@ -73,6 +75,16 @@ export function App() {
         {engineError && <p role="alert">{engineError}</p>}
         <p>FPS: {fps}</p>
         <p>Landmarks: {pose?.landmarks.length ?? 0}</p>
+      </section>
+      <section>
+        <h2>Reps</h2>
+        <p>Valid: {validCount}</p>
+        <p>Rejected: {rejectedCount}</p>
+        <p>State: {currentState}</p>
+        <p>Elbow angle: {currentAngle === null ? '—' : `${currentAngle.toFixed(1)}°`}</p>
+        {lastRep && !lastRep.valid && (
+          <p role="alert">Last rep rejected: {lastRep.faults.join(', ')}</p>
+        )}
       </section>
     </main>
   );
