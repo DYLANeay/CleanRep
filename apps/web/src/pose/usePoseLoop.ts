@@ -21,7 +21,7 @@ export function usePoseLoop(
 
   const rafRef = useRef<number | null>(null);
   const frameCount = useRef(0);
-  const fpsWindowStart = useRef(0);
+  const fpsWindowStart = useRef<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
