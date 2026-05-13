@@ -99,7 +99,8 @@ describe('RepCounter', () => {
   it('reports both INSUFFICIENT_DEPTH and POSTURE_LOST when applicable', () => {
     const c = new RepCounter();
     c.update(170, 0, true);
-    c.update(100, 100, false);
+    c.update(100, 100, true);
+    c.update(95, 150, false);
     const rep = c.update(170, 200, true);
     expect(rep?.valid).toBe(false);
     expect(rep?.faults).toEqual(['INSUFFICIENT_DEPTH', 'POSTURE_LOST']);
