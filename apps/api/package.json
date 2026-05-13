@@ -6,11 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "postinstall": "prisma generate"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
     "cors": "^2.8.5",
     "express": "^4.21.0"
   },
