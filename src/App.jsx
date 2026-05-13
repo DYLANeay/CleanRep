@@ -63,6 +63,7 @@ export function App() {
         <p>Valid: {validCount}</p>
         <p>Rejected: {rejectedCount}</p>
         <p>State: {currentState}</p>
+        <p>Posture: {inPosture ? 'ok' : 'not in plank'}</p>
         <p>Elbow angle: {currentAngle === null ? '—' : `${currentAngle.toFixed(1)}°`}</p>
         {lastRep && !lastRep.valid && (
           <p role="alert">Last rep rejected: {lastRep.faults.join(', ')}</p>
